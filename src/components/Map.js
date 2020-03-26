@@ -10,7 +10,7 @@ function Map({content,country,deaths,recovered,totalcases}) {
     return (
         <div>
         <div className="bg-light p-1 h4 mt-2 text-center">Confirmed cases of coronavirus disease (COVID-19)</div>
-        <div ref={ref} className="container text-center"></div>
+        <div ref={ref} className="text-center"></div>
         <div className="bg-light p-1 h4 mt-2 text-center">Current Status</div>
         <div className="container text-center mt-3">
             <div className="text-bold h4 pt-3">Total countries Affected</div>

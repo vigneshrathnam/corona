@@ -2,13 +2,10 @@ import React, { useRef, useEffect } from "react";
 
 function List({list}) {
     const ref=useRef(null);    
-    console.log(list);
     useEffect(()=>{
         const thead=` <thead>
         <tr>
-        <th>Flag
-        </th>
-        <th>Name
+        <th>Location 
         </th>
         <th>Total Cases
         </th>
@@ -26,7 +23,7 @@ function List({list}) {
     return (
     <div>
         <div className="bg-light p-1 h4 mt-2 text-center">List of countries </div>
-        <div className="tab">
+        <div className="tab container">
             <table ref={ref} className="table table-bordered table-hover">
             </table>
         </div>

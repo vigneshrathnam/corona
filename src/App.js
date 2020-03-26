@@ -5,10 +5,13 @@ import Map from "./components/Map";
 import List from './components/List';
 import HashLoader from "react-spinners/HashLoader";
 import Foot from './components/Foot';
+import Symptoms from "./components/Symptoms";
+import Github from './components/Github';
 
 function App() {
   var table=``;
-
+  var symTable=``;
+  const [sym,setSym]=useState("Failed to load");
   const [loaded,setloaded]=useState(false);
   const [country,setCountry]=useState(0);
   const [totalCases,setTotalCases]=useState(0);
@@ -21,7 +24,6 @@ function App() {
 />
 </div>
 );
-
   const [content,setContent]=useState("Failed to Load");
   const [list,setList]=useState("Loading");
   fetch("https://corsanywhere.herokuapp.com/en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic")
@@ -36,17 +38,35 @@ function App() {
       setTotalCases(response.querySelector("tbody tr th.covid-total-row:nth-child(2) b").innerText)
       setDeaths(response.querySelector("tbody tr th.covid-total-row:nth-child(3) b").innerText);
       setRecovered(response.querySelector("tbody tr th.covid-total-row:nth-child(4) b").innerText);
-      setContent(response.querySelector("table.infobox tr:nth-child(1) td").innerHTML);
-      for(let i=4;i<=country;i++){
+      const html=`
+      <div>
+      <img src=${response.querySelector("table.infobox tr:nth-child(1) td img").src} alt="world">
+      <div class="container p-1 h4 mt-2 text-center">${response.querySelector("table.infobox tr:nth-child(1) td div.center").innerText}
+      </div>
+      <div class="container ">
+      ${response.querySelector("table.infobox tr:nth-child(1) td div .legend").parentNode.innerHTML}
+      </div>
+      </div>
+      `;
+      // setContent(response.querySelector("table.infobox tr:nth-child(1) td").innerHTML);
+      setContent(html);
+      const len=response.querySelectorAll(".wikitable")[1].querySelectorAll("tr").length;
+      for(let i=2;i<=len;i++){
+        symTable+=`<tr>
+          <td>${response.querySelectorAll(".wikitable")[1].querySelector("tr:nth-child("+i+") td:nth-child(1)").innerText.replace(/(\[.*\])/,"")}</td>
+          <td>${response.querySelectorAll(".wikitable")[1].querySelector("tr:nth-child("+i+") td:nth-child(2)").innerText.replace(/(\[.*\])/,"")}</td>
+        </tr>`;
+      }
+      setSym(symTable);
+      for(let i=4;i<country;i++){
         const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText.replace(/(,)/g,"")-response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText.replace(/(,)/,"").replace("–",0));
-        const activeCasesValid=activeCasesCurrent;
         table+=`<tr>
-          <td>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th:nth-child(1)").innerHTML}<td>
-          ${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}
+          <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th:nth-child(1)").innerHTML} &nbsp; 
+          ${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
           <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
           <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
           <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText}</td>
-          <td>${activeCasesValid}</td>
+          <td>${activeCasesCurrent}</td>
         </tr>`;
       }
       setList(table)
@@ -67,9 +87,10 @@ function App() {
        recovered={recovered} totalcases={totalCases}
        deaths={deaths}
        />
-      {/* <Add /> */}
+      <Symptoms sym={<>{sym}</>} />
         <List list={<>{list}</>} />
         <Foot />  
+        <Github />
       </div>:loading}
     </div>
   );
