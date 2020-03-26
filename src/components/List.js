@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 
 function List({list}) {
-    const ref=useRef(null);    
+    const ref=useRef(null);
     useEffect(()=>{
         const thead=` <thead>
         <tr>
@@ -17,14 +17,17 @@ function List({list}) {
         </th>
         </tr>
         </thead>`;
-        ref.current.innerHTML=thead+list.props.children;
+        const table=thead+list.props.children;
+        ref.current.innerHTML=table;
         return;
-    },[list])
+    },[list]);
+
     return (
     <div>
         <div className="bg-light p-1 h4 mt-2 text-center">List of countries </div>
         <div className="tab container">
             <table ref={ref} className="table table-bordered table-hover">
+            
             </table>
         </div>
     </div>

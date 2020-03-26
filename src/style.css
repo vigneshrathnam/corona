@@ -13,8 +13,10 @@ body {
 .table thead th {
     position: sticky;
     top: 0;
-    background-color: var(--light);
-    color: var(--dark); 
+    background-color: var(--primary);
+    color: var(--white); 
+    vertical-align: middle;
+    text-align: center;
 }
 
 .table th{

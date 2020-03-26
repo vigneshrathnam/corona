@@ -1,9 +1,8 @@
 import React, {  useState} from 'react';
 import "./css/bootstrap.min.css";
-// import Add from "./components/Add";
 import Map from "./components/Map";
 import List from './components/List';
-import HashLoader from "react-spinners/HashLoader";
+import {HashLoader} from "react-spinners";
 import Foot from './components/Foot';
 import Symptoms from "./components/Symptoms";
 import Github from './components/Github';
@@ -25,7 +24,7 @@ function App() {
 </div>
 );
   const [content,setContent]=useState("Failed to Load");
-  const [list,setList]=useState("Loading");
+  const [list,setList]=useState("Loading...");
   fetch("https://corsanywhere.herokuapp.com/en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic")
   .then(res=>res.text())
   .then(data=>{return {data:data,cod: 200}})
@@ -48,7 +47,6 @@ function App() {
       </div>
       </div>
       `;
-      // setContent(response.querySelector("table.infobox tr:nth-child(1) td").innerHTML);
       setContent(html);
       const len=response.querySelectorAll(".wikitable")[1].querySelectorAll("tr").length;
       for(let i=2;i<=len;i++){
@@ -58,18 +56,21 @@ function App() {
         </tr>`;
       }
       setSym(symTable);
-      for(let i=4;i<country;i++){
-        const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText.replace(/(,)/g,"")-response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText.replace(/(,)/,"").replace("–",0));
-        table+=`<tr>
-          <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th:nth-child(1)").innerHTML} &nbsp; 
-          ${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
-          <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
-          <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
-          <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText}</td>
-          <td>${activeCasesCurrent}</td>
-        </tr>`;
+      const updatedCountry=+country+4;
+      if(loaded) {
+        for(let i=4;i<updatedCountry;i++){
+          const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText.replace(/(,)/g,"")-response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText.replace(/(,)/,"").replace("–",0));
+          table+=`<tr>
+            <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp; 
+            ${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
+            <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
+            <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
+            <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText}</td>
+            <td>${activeCasesCurrent}</td>
+          </tr>`;
+        }
+        setList(table)
       }
-      setList(table)
       setloaded(true);
     }
     else {
