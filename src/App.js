@@ -56,7 +56,7 @@ function App() {
         </tr>`;
       }
       setSym(symTable);
-      const updatedCountry=+country+4;
+      const updatedCountry=+country+3;
       if(loaded) {
         for(let i=4;i<updatedCountry;i++){
           const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText.replace(/(,)/g,"")-response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText.replace(/(,)/,"").replace("–",0));
