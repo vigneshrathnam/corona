@@ -16,12 +16,14 @@ function App() {
   const [totalCases,setTotalCases]=useState(0);
   const [recovered,setRecovered]=useState(0);
   const [deaths,setDeaths]=useState(0);
-  const loading=  ( <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "80vh"}}><HashLoader
-  size={75}
-  acolor={"#123abc"}
-  loading={true}
-/>
-</div>
+  const loading=  ( <div 
+                    style={{display: "flex", justifyContent: "center", alignItems: "center", height: "80vh"}}>
+                      <HashLoader
+                      size={75}
+                      acolor={"#123abc"}
+                      loading={true}
+                      />
+                  </div>
 );
   const [content,setContent]=useState("Failed to Load");
   const [list,setList]=useState("Loading...");
@@ -58,7 +60,7 @@ function App() {
       setSym(symTable);
       const updatedCountry=+country+3;
       if(loaded) {
-        for(let i=4;i<updatedCountry;i++){
+        for(let i=3;i<=updatedCountry;i++){
           const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText.replace(/(,)/g,"")-response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText.replace(/(,)/,"").replace("–",0));
           table+=`<tr>
             <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp; 
