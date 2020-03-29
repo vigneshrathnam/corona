@@ -4,13 +4,10 @@ import Map from "./components/Map";
 import List from './components/List';
 import {HashLoader} from "react-spinners";
 import Foot from './components/Foot';
-import Symptoms from "./components/Symptoms";
 import Github from './components/Github';
 
 function App() {
   var table=``;
-  var symTable=``;
-  const [sym,setSym]=useState("Failed to load");
   const [loaded,setloaded]=useState(false);
   const [country,setCountry]=useState(0);
   const [totalCases,setTotalCases]=useState(0);
@@ -50,14 +47,6 @@ function App() {
       </div>
       `;
       setContent(html);
-      const len=response.querySelectorAll(".wikitable")[1].querySelectorAll("tr").length;
-      for(let i=2;i<=len;i++){
-        symTable+=`<tr>
-          <td>${response.querySelectorAll(".wikitable")[1].querySelector("tr:nth-child("+i+") td:nth-child(1)").innerText.replace(/(\[.*\])/,"")}</td>
-          <td>${response.querySelectorAll(".wikitable")[1].querySelector("tr:nth-child("+i+") td:nth-child(2)").innerText.replace(/(\[.*\])/,"")}</td>
-        </tr>`;
-      }
-      setSym(symTable);
       const updatedCountry=+country+3;
       if(loaded) {
         for(let i=3;i<=updatedCountry;i++){
@@ -90,7 +79,6 @@ function App() {
        recovered={recovered} totalcases={totalCases}
        deaths={deaths}
        />
-      <Symptoms sym={<>{sym}</>} />
         <List list={list} />
         <Foot />  
         <Github />
