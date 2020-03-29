@@ -63,8 +63,8 @@ function App() {
         for(let i=3;i<=updatedCountry;i++){
           const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText.replace(/(,)/g,"")-response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText.replace(/(,)/,"").replace("–",0));
           table+=`<tr>
-            <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp; 
-            ${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
+            <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp;</th> 
+            <th>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
             <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
             <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
             <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText}</td>
@@ -91,9 +91,9 @@ function App() {
        deaths={deaths}
        />
       <Symptoms sym={<>{sym}</>} />
-        <List list={<>{list}</>} />
+        <List list={list} />
         <Foot />  
-        <Github />
+        {/* <Github /> */}
       </div>:loading}
     </div>
   );
