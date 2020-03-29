@@ -93,7 +93,7 @@ function App() {
       <Symptoms sym={<>{sym}</>} />
         <List list={list} />
         <Foot />  
-        {/* <Github /> */}
+        <Github />
       </div>:loading}
     </div>
   );
