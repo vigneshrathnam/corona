@@ -24,7 +24,7 @@ function List({list}) {
         reverse = -((+reverse) || -1);
         tr = tr.sort(function (a, b) { // sort rows
             return reverse // `-1 *` if want opposite order
-                * (+a.cells[col].textContent.trim().replace(',','')-+b.cells[col].textContent.trim().replace(',',''));
+                * (+a.cells[col].textContent.trim().replace(',','')-+b.cells[col].textContent.trim().replace("-",0).replace(',',''));
         });
         for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
     }
