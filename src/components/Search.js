@@ -18,7 +18,7 @@ function Search({search}) {
                             setCountry(e.target.value);
                         }} 
                         className="form-input-control pl-2 py-1" placeholder="Search"/>
-                        <div className="input-group-text">
+                        <div className="input-group-append">
                             <button onClick={handleClick} className="btn btn-primary" type="submit">
                                 <i className="fa fa-search fa-lg"></i>
                             </button>
