@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import 'font-awesome/css/font-awesome.min.css';
 
 function List({list}) {
     const [rev,setRev]=useState(true);
@@ -63,6 +62,7 @@ function List({list}) {
     return (
     <div>
         <div className="bg-light p-1 h4 mt-2 text-center">List of countries </div>
+        <div id="nothing"></div>
         <div className="tab covid19 container">
             <table dangerouslySetInnerHTML={{ __html: thead+list }} id="myTable"  className="table table-bordered table-hover">
             
