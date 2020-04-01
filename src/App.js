@@ -41,11 +41,11 @@
         setRecovered(response.querySelector("tbody tr th.covid-total-row:nth-child(4) b").innerText);
         const html=`
         <div>
-        <img src=${response.querySelector("table.infobox tr:nth-child(1) td img").src} alt="world">
-        <div class="container p-1 h4 mt-2 text-center">${response.querySelector("table.infobox tr:nth-child(1) td div.center").innerText}
+        <img style="width: 60%;height: auto;" src="https://upload.wikimedia.org/wikipedia/commons/3/3b/COVID-19_Outbreak_World_Map_per_Capita.svg" alt="world">
+        <div class="container p-1 h4 mt-2 text-center">${response.querySelector("table tbody tr td div div.center").innerText}
         </div>
         <div class="container ">
-        ${response.querySelector("table.infobox tr:nth-child(1) td div .legend").parentNode.innerHTML}
+        ${response.querySelector("table tbody tr td div .legend").parentNode.innerHTML}
         </div>
         </div>
         `;
