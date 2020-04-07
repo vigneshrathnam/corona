@@ -5,7 +5,6 @@
   import {HashLoader} from "react-spinners";
   import Foot from './components/Foot';
   import Github from './components/Github';
-  import Search from "./components/Search";
   import 'font-awesome/css/font-awesome.min.css';
   import nothingSRC from './nothing.png'
 
@@ -35,7 +34,7 @@
         if(data.cod===200) {
         const xmlP=new DOMParser();
         const response=xmlP.parseFromString(data.data,"text/html");
-        setCountry(+response.querySelector("tbody tr th.covid-total-row:nth-child(1) b").innerText+1);
+        setCountry(+response.querySelector("tbody tr th.covid-total-row:nth-child(1) b").innerText);
         setTotalCases(response.querySelector("tbody tr th.covid-total-row:nth-child(2) b").innerText)
         setDeaths(response.querySelector("tbody tr th.covid-total-row:nth-child(3) b").innerText);
         setRecovered(response.querySelector("tbody tr th.covid-total-row:nth-child(4) b").innerText);
@@ -50,16 +49,16 @@
         </div>
         `;
         setContent(html);
-        const updatedCountry=+country+2;
+        const updatedCountry=+country+3;
         if(loaded) {
-          for(let i=3;i<=updatedCountry;i++){
-            const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText.replace(/(,)/g,"")-response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText.replace(/(,)/,"").replace("–",0));
+          for(let i=3;i<updatedCountry;i++){
+            const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].textContent.replace(/(,)/g,"")-+response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].textContent.replace(/(,)/,"").replace("–",0));
             table+=`<tr>
               <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp;</th> 
               <th>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
               <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
               <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
-              <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].innerText}</td>
+              <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].textContent}</td>
               <td>${activeCasesCurrent}</td>
             </tr>`;
           }
@@ -118,8 +117,7 @@
         recovered={recovered} totalcases={totalCases}
         deaths={deaths}
         />
-        <Search search={filterTable} />
-          <List list={list} />
+          <List list={list} filterTable={filterTable}/>
           <Foot />  
           <Github />
         </div>:loading}

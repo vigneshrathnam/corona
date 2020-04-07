@@ -4,25 +4,31 @@ function Search({search}) {
     const [country,setCountry]=useState('');
     var handleClick=e=>{
         e.preventDefault();
-        search(country);
+        setCountry('');
+        search('');
     }
     return (
         <div>
-            <div className="bg-light p-1 h4 mt-2 text-center">Search your country </div>
                 <div className="container">  
                     <div className="d-table mx-auto">
                         <div className="input-group my-4">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">
+                                <i className="fa fa-search"></i>
+                            </span>
+                        </div>
                         <input type="text"
                         value={country}
                         onChange={e=>{
                             setCountry(e.target.value);
+                            search(e.target.value);
                         }} 
-                        className="form-input-control pl-2 py-1" placeholder="Search"/>
-                        <div className="input-group-append">
-                            <button onClick={handleClick} className="btn btn-primary" type="submit">
-                                <i className="fa fa-search fa-lg"></i>
+                        className="form-control pr-ad py-1" placeholder="Search"/>
+                        {(country.length>0)?<span className="input-group-btn">
+                            <button onClick={handleClick} className="btn btn-default" type="submit">
+                                <i className="fa fa-times fa-lg text-dark"></i>
                             </button>
-                        </div>
+                        </span>:''}
                         </div>
                     </div>
                 </div>

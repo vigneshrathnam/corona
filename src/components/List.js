@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import Search from "./Search";
 
-function List({list}) {
+function List({list,filterTable}) {
     const [rev,setRev]=useState(true);
     function sortTable(table, col, reverse) {
         var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
@@ -62,6 +63,7 @@ function List({list}) {
     return (
     <div>
         <div className="bg-light p-1 h4 mt-2 text-center">List of countries </div>
+        <Search search={filterTable} />
         <div id="nothing"></div>
         <div className="tab covid19 container">
             <table dangerouslySetInnerHTML={{ __html: thead+list }} id="myTable"  className="table table-bordered table-hover">
