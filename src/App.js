@@ -2,7 +2,7 @@
   import "./css/bootstrap.min.css";
   import Map from "./components/Map";
   import List from './components/List';
-  import {HashLoader} from "react-spinners";
+  import { HashLoader } from "react-spinners";
   import Foot from './components/Foot';
   import Github from './components/Github';
   import 'font-awesome/css/font-awesome.min.css';
@@ -25,7 +25,7 @@
                         />
                     </div>
   );
-  const [content,setContent]=useState("Failed to Load");
+  const [content,setContent]=useState("");
   const [list,setList]=useState("");
   useEffect(()=>{
     if(fetched === false) {
