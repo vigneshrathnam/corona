@@ -1,4 +1,4 @@
-  import React, {  useState} from 'react';
+  import React, { useState,useEffect } from 'react';
   import "./css/bootstrap.min.css";
   import Map from "./components/Map";
   import List from './components/List';
@@ -7,14 +7,15 @@
   import Github from './components/Github';
   import 'font-awesome/css/font-awesome.min.css';
   import nothingSRC from './nothing.png'
-
+  import axios from "axios";
+ 
   function App() {
-    var table=``;
-    const [loaded,setloaded]=useState(false);
+    const [fetched,setfetched]=useState(false);
     const [country,setCountry]=useState(0);
     const [totalCases,setTotalCases]=useState(0);
     const [recovered,setRecovered]=useState(0);
     const [deaths,setDeaths]=useState(0);
+    const [data,setData]=useState('');
     const loading=  ( <div 
                       style={{display: "flex", justifyContent: "center", alignItems: "center", height: "80vh"}}>
                         <HashLoader
@@ -24,54 +25,61 @@
                         />
                     </div>
   );
-    const [content,setContent]=useState("Failed to Load");
-    const [list,setList]=useState("Loading...");
-    fetch("https://corsanywhere.herokuapp.com/en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic")
-    .then(res=>res.text())
-    .then(data=>{return {data:data,cod: 200}})
-    .catch(e=>{return {data:e,cod: 400}})
-    .then(data=>{
-        if(data.cod===200) {
-        const xmlP=new DOMParser();
-        const response=xmlP.parseFromString(data.data,"text/html");
-        setCountry(+response.querySelector("tbody tr th.covid-total-row:nth-child(1) b").innerText);
-        setTotalCases(response.querySelector("tbody tr th.covid-total-row:nth-child(2) b").innerText)
-        setDeaths(response.querySelector("tbody tr th.covid-total-row:nth-child(3) b").innerText);
-        setRecovered(response.querySelector("tbody tr th.covid-total-row:nth-child(4) b").innerText);
-        const html=`
-        <div>
-        <img style="width: 60%;height: auto;" src="https://upload.wikimedia.org/wikipedia/commons/3/3b/COVID-19_Outbreak_World_Map_per_Capita.svg" alt="world">
-        <div class="container p-1 h4 mt-2 text-center">${response.querySelector("table tbody tr td div div.center").innerText}
-        </div>
-        <div class="container ">
-        ${response.querySelector("table tbody tr td div .legend").parentNode.innerHTML}
-        </div>
-        </div>
-        `;
-        setContent(html);
-        const updatedCountry=+country+3;
-        if(loaded) {
-          for(let i=3;i<updatedCountry;i++){
-            const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].textContent.replace(/(,)/g,"")-+response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].textContent.replace(/(,)/,"").replace("–",0));
-            table+=`<tr>
-              <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp;</th> 
-              <th>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
-              <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
-              <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
-              <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].textContent}</td>
-              <td>${activeCasesCurrent}</td>
-            </tr>`;
-          }
-          setList(table)
-        }
-        setloaded(true);
-      }
-      else {
-        setContent("You must Need to have active internet connection.");
-        setList("You must Need to have active internet connection.");
-        setloaded(true);
-      }
-    });
+  const [content,setContent]=useState("Failed to Load");
+  const [list,setList]=useState("");
+  useEffect(()=>{
+    if(fetched === false) {
+      getData();
+    }
+    else {
+      putData();
+    }
+    return;
+  },[fetched])
+  var getData=async ()=>{
+    try{
+    let [val]=await Promise.all([axios.get("https://corsanywhere.herokuapp.com/en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic")])
+    setData(val.data);  
+    setfetched(true);
+    }
+    catch(e)
+    {
+      console.log(e);
+    }
+  }
+  var putData=()=>{
+    var table=``;
+    const xmlP=new DOMParser();
+    const response=xmlP.parseFromString(data,"text/html");
+    setCountry(+response.querySelector("tbody tr th.covid-total-row:nth-child(1) b").innerText);
+    setTotalCases(response.querySelector("tbody tr th.covid-total-row:nth-child(2) b").innerText)
+    setDeaths(response.querySelector("tbody tr th.covid-total-row:nth-child(3) b").innerText);
+    setRecovered(response.querySelector("tbody tr th.covid-total-row:nth-child(4) b").innerText);
+    const html=`
+    <div>
+    <img style="width: 60%;height: auto;" src="https://upload.wikimedia.org/wikipedia/commons/3/3b/COVID-19_Outbreak_World_Map_per_Capita.svg" alt="world">
+    <div class="container p-1 h4 mt-2 text-center">${response.querySelector("table tbody tr td div div.center").innerText}
+    </div>
+    <div class="container ">
+    ${response.querySelector("table tbody tr td div .legend").parentNode.innerHTML}
+    </div>
+    </div>
+    `;
+    setContent(html);
+    const updatedCountry=+response.querySelector("tbody tr th.covid-total-row:nth-child(1) b").innerText+3;
+    for(let i=3;i<updatedCountry;i++){
+      const activeCasesCurrent=Intl.NumberFormat("en-IN").format(response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].textContent.replace(/(,)/g,"")-+response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].textContent.replace(/(,)/,"").replace("–",0));
+      table+=`<tr>
+        <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp;</th> 
+        <th>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
+        <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
+        <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
+        <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].textContent}</td>
+        <td>${activeCasesCurrent}</td>
+      </tr>`;
+    }
+    setList(table)
+  }
     var filterTable=(filter)=>{
       var  table, tr, th, txtValue,count=0;
       var nothing=document.getElementById("nothing");
@@ -112,7 +120,7 @@
     return(
       <div className="container">
         <h1 className="bg-primary text-white p-2 h2 text-center">Corona Virus Live Statistics</h1>
-        {loaded?<div>
+        {fetched?<div>
         <Map content={<>{content}</>} country={country}
         recovered={recovered} totalcases={totalCases}
         deaths={deaths}
@@ -121,6 +129,8 @@
           <Foot />  
           <Github />
         </div>:loading}
+          <div className="container">
+          </div>
       </div>
     );
   }
