@@ -71,7 +71,7 @@
     for(let i=3;i<updatedCountry;i++){
       const activeCasesCurrent=Intl.NumberFormat("en-IN").format(+response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].textContent.replace(/(,)/g,"")-+response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText.replace(/(,)/,"")-+response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[2].textContent.replace(/(,)/,"").replace("–",0));
       table+=`<tr>
-        <th>${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th").innerHTML} &nbsp;</th> 
+        <th><img width="23" height="12" src="${response.querySelector("div#covid19-container tbody tr:nth-child("+i+") th img").src}" alt="flag" /> &nbsp;</th> 
         <th>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") th ")[1].innerText.replace(/((\(.*\))?\[.*\])/,'')}</th>
         <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[0].innerText}</td>
         <td>${response.querySelectorAll("div#covid19-container tbody tr:nth-child("+i+") td")[1].innerText}</td>
